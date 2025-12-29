@@ -1,2 +1,25 @@
+set enc=utf-8
+set fenc=utf-8
+set termencoding=utf-8
+
 set nocompatible
 set number
+
+set showcmd 
+set ignorecase
+set incsearch
+set smartcase
+
+set autoindent
+set smartindent
+
+set t_Co=256	
+set textwidth=100
+
+set comments=sl:/*,mb:\ *,elx:\ */
+
+syntax on
+
+" switching between c headers
+map <F3> :e %p:s,.$h,.X123X,:s,.$cpp,.hpp,:s,.X123X$,.cpp,<CR>
+imap <F2> <ESC>:w<CR>i
