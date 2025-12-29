@@ -29,4 +29,66 @@ backup_configs() {
     echo "Backup saved to: $BACKUP_DIR"
 }
 
+install_configs() {
+    echo -e "${GREEN}Installing configs..."
 
+    cp vimrc /etc/vim/
+    cp vimrc.local /etc/vim/
+    
+    chmod 644 /etc/vim/vimrc
+    chmod 644 /etc/vim/vimrc.local
+
+    echo -e "${GREEN} System configs installed!"
+}
+
+install_plugins() {
+    echo -e "${GREEN}Installing Vim plugins..."
+
+    mkdir -p ~/.vim/autoload ~/.vim/bundle
+
+    if [ ! -f ~/.vim/autoload/plug.vim ]; then 
+        echo "Installing Vim-Plug..."
+        curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+            "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+    fi
+
+    echo "Installing plugins..."
+
+    vim -E -s -u +PlugInstall +qall 2>/dev/null || \
+    echo "Plugins installed (may need to run vim and type :PlugInstall if auto-install failed)"
+}
+
+create_user_symlink(){
+    echo -e "${YELLOW} Creating user symlinks...${NC}"
+
+    mkdir -p ~/.vim
+    ln -sf /etc/vim/vimrc ~/.vim/vimrc 2>/dev/null || true
+    ln -sf /etc/vim/vim.local ~/.vim/vimrc.local 2>/dev/null || true
+}
+
+main() {
+    echo "====================================="
+    echo "|    Vim configuration installer    |"
+    echo "====================================="
+    
+    backup_configs
+    install_configs
+    install_plugins
+
+    echo -e "\n${GREEN} Installation complete!${NC}"
+    echo ""
+    echo "Installed files:"
+    echo "  - /etc/vim/vimrc"
+    echo "  - /etc/vim/vimrc.local"
+    echo "  - ~/.vim/autoload/plug.vim (vim manager)"
+    echo "  - ~/.vim/bundle (plugins directory)"
+    echo "" 
+    echo "To Remove:"
+    echo "sudo rm /etc/vim/vimrc /etc/vim/vimrc.local"
+    echo "rm -rf ~/.vim"
+    echo ""
+    echo "Restart Vim or run: vim +PlugInstall"
+    echo "====================================="
+}
+
+main "$@"
