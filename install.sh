@@ -13,6 +13,9 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
+REAL_USER="${SUDO_USER:-$(whoami)}"
+REAL_HOME=$(eval echo "~$REAL_USER")
+
 if [ "$EUID" -ne 0 ]; then 
     echo -e "${RED}Please run with sudo: sudo ./install.sh${MC}"
     exit 1
@@ -43,12 +46,12 @@ install_configs() {
 
 install_plugins() {
     echo -e "${GREEN}Installing Vim plugins..."
+	echo "$REAL_HOME"
+    mkdir -p "$REAL_HOME/.vim/autoload" "$REAL_HOME/.vim/bundle"
 
-    mkdir -p ~/.vim/autoload ~/.vim/bundle
-
-    if [ ! -f ~/.vim/autoload/plug.vim ]; then 
+    if [ ! -f $REAL_HOME/.vim/autoload/plug.vim ]; then 
         echo "Installing Vim-Plug..."
-        curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+        curl -fLo $REAL_HOME/.vim/autoload/plug.vim --create-dirs \
             "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
     fi
 
@@ -66,15 +69,19 @@ create_user_symlink(){
     ln -sf /etc/vim/vim.local ~/.vim/vimrc.local 2>/dev/null || true
 }
 
+installation_process() {
+	echo 1
+}
+
 main() {
     echo "====================================="
     echo "|    Vim configuration installer    |"
     echo "====================================="
-    
+
     backup_configs
     install_configs
     install_plugins
-
+	
     echo -e "\n${GREEN} Installation complete!${NC}"
     echo ""
     echo "Installed files:"
