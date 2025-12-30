@@ -53,8 +53,13 @@ filetype plugin indent on
 "set mouse=a		" Enable mouse usage (all modes)
 
 " Source a global configuration file if available
-set nocompatible
 if filereadable("/etc/vim/vimrc.local")
   	source /etc/vim/vimrc.local
 endif
 
+filetype off
+call plug#begin('~/.vim/plugged')
+
+Plug 'jiangmiao/auto-pairs'
+
+call plug#end()

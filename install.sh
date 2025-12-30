@@ -37,7 +37,7 @@ install_configs() {
 
     cp vimrc /etc/vim/
     cp vimrc.local /etc/vim/
-    
+
     chmod 644 /etc/vim/vimrc
     chmod 644 /etc/vim/vimrc.local
 
@@ -46,20 +46,25 @@ install_configs() {
 
 install_plugins() {
     echo -e "${GREEN}Installing Vim plugins..."
-	echo "$REAL_HOME"
+    echo "$REAL_HOME"
     mkdir -p "$REAL_HOME/.vim/autoload" "$REAL_HOME/.vim/bundle"
 
     if [ ! -f $REAL_HOME/.vim/autoload/plug.vim ]; then 
-        echo "Installing Vim-Plug..."
-        curl -fLo $REAL_HOME/.vim/autoload/plug.vim --create-dirs \
-            "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+	echo "Installing Vim-Plug..."
+	curl -fLo $REAL_HOME/.vim/autoload/plug.vim --create-dirs \
+	    "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+    fi
+
+    if [ ! -f $REAL_HOME/.vim/plugged/auto-pairs.vim ]; then 
+	curl -fLo $REAL_HOME/.vim/plugged/auto-pairs.vim --create-dirs \
+	    "https://raw.githubusercontent.com/jiangmiao/auto-pairs/master/plugin/auto-pairs.vim"
     fi
 
     echo "Installing plugins..."
 
     vim -E -s -u +PlugInstall +qall 2>/dev/null || \
-    echo "Plugins installed (may need to run vim and type :PlugInstall if auto-install failed)"
-}
+	echo "Plugins installed (may need to run vim and type :PlugInstall if auto-install failed)"
+    }
 
 create_user_symlink(){
     echo -e "${YELLOW} Creating user symlinks...${NC}"
@@ -70,7 +75,7 @@ create_user_symlink(){
 }
 
 installation_process() {
-	echo 1
+    echo 1
 }
 
 main() {
@@ -81,7 +86,7 @@ main() {
     backup_configs
     install_configs
     install_plugins
-	
+
     echo -e "\n${GREEN} Installation complete!${NC}"
     echo ""
     echo "Installed files:"
