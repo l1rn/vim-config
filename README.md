@@ -14,3 +14,6 @@ sudo chmod 755 install.sh
 ```
 sudo ./install.sh
 ```
+```
+sudo ln -sf ~/.vim /root/.vim # create symlink for root
+```
