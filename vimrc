@@ -61,5 +61,9 @@ filetype off
 call plug#begin('~/.vim/plugged')
 
 Plug 'jiangmiao/auto-pairs'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'preservim/nerdtree'
+Plug 'frazrepo/vim-rainbow'
+Plug 'morhetz/gruvbox'
 
 call plug#end()

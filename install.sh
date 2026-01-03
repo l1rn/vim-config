@@ -59,6 +59,7 @@ install_plugins() {
 	}
 
 create_user_symlink(){
+
 	echo -e "${YELLOW} Creating user symlinks...${NC}"
 
 	mkdir -p ~/.vim
@@ -68,6 +69,7 @@ create_user_symlink(){
 	read -p "Create root symlinks? (y/n): "
 	if [[ $REPLY =~ ^[Yy]$ ]]; then
 		ln -sf $REAL_HOME/.vim /root/.vim
+		sudo cp -a $REAL_HOME/.vim /root/
 	fi
 	echo "- Symlinks created!"
 }

@@ -1,4 +1,4 @@
-:
+
 set nocompatible
 set number
 
@@ -13,10 +13,10 @@ set smartindent
 set t_Co=256
 set textwidth=100
 
-set comments=sl:/*,mb:\ *,elx:\ */
 
 syntax on
 
 " switching between c headers
-map <F3> :e %p:s,.$h,.X123X,:s,.$cpp,.hpp,:s,.X123X$,.cpp,<CR>
 imap <F2> <ESC>:w<CR>i
+
+nnoremap <F3> :NERDTreeToggle <CR>
