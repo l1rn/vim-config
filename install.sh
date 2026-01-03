@@ -34,7 +34,7 @@ backup_configs() {
 
 install_configs() {
 	echo "Installing configs..."
-	cp vimrc /etc/vim/
+	cp vimrc /etc/vim/vimrc
 	cp .vimrc $REAL_HOME/
 
 	chmod 644 /etc/vim/vimrc
@@ -59,16 +59,17 @@ install_plugins() {
 	}
 
 create_user_symlink(){
-	echo -e "${YELLOW} Creating user symlinks...${NC}"
+	echo -e "${YELLOW}Creating user symlinks...${NC}"
+	if [ -L "${REAL_HOME}/.vimrc" ] && [ ! -e "$REAL_HOME/.vimrc" ]; then
+		rm -f "$REAL_HOME/.vimrc"
+	fi
+	ln -sf .vimrc "$REAL_HOME/.vimrc"
+	echo "${GREEN}	Created: $REAL_HOME/.vimrc"
 
-	mkdir -p ~/.vim
-	ln -sf /etc/vim/vimrc $REAL_HOME/.vimrc 2>/dev/null || true
-	
-	read -p "Create root symlinks? (y/n): "
-	if [[ $REPLY =~ ^[Yy]$ ]]; then
-		ln -sf $REAL_HOME/.vim /root/.vim
-		sudo cp -a $REAL_HOME/.vim /root/
-		sudo cp .vimrc /root/
+	read -rp "Create root symlinks? (y/n): " root_answer
+	if [[ $root_answer =~ ^[Yy]$ ]]; then
+		sudo ln -sf $REAL_HOME/.vim /root/.vim 2>/dev/null
+		sudo ln -sf .vimrc /root/.vimrc
 	fi
 	echo "- Symlinks created!"
 }
@@ -79,7 +80,6 @@ installation_process() {
 	echo "====================================="
 	read -p "Use easy installation w/o backup? (y/n): "
 	if [[ $REPLY =~ ^[Yy]$ ]]; then
-		ln -sf $REAL_HOME/.vim /root/.vim
 		install_configs
 		install_plugins
 		create_user_symlink

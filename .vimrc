@@ -22,3 +22,4 @@ imap <F2> <ESC>:w<CR>i
 nnoremap <F3> :NERDTreeToggle <CR>
 colorscheme gruvbox
 set background=dark
+let g:rainbow_active = 1
