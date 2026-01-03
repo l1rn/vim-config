@@ -23,11 +23,11 @@ fi
 
 backup_configs() {
 	echo -e "${YELLOW}Backing up existing configs...${NC}"
-	BACKUP_DIR="/etc/vim/backup-$(date +%Y%m%d-%H%M%s)"
+	BACKUP_DIR="/tmp/vim-config/backup-$(date +%Y%m%d-%H%M%s)"
 	mkdir -p "$BACKUP_DIR"
 
 	[ -f /etc/vim/vimrc ] && cp /etc/vim/vimrc "$BACKUP_DIR/"
-	[ -f /etc/vim/vimrc.local ] && cp /etc/vim/vimrc.local "$BACKUP_DIR/"
+	[ -f $REAL_HOME/.vimrc ] && cp $REAL_HOME/.vimrc "$BACKUP_DIR/"
 
 	echo "Backup saved to: $BACKUP_DIR"
 }
@@ -35,10 +35,10 @@ backup_configs() {
 install_configs() {
 	echo "Installing configs..."
 	cp vimrc /etc/vim/
-	cp vimrc.local /etc/vim/
+	cp .vimrc $REAL_HOME/
 
 	chmod 644 /etc/vim/vimrc
-	chmod 644 /etc/vim/vimrc.local
+	chmod 644 $REAL_HOME/.vimrc
 
 	echo -e "- System configs installed!"
 }
@@ -59,17 +59,16 @@ install_plugins() {
 	}
 
 create_user_symlink(){
-
 	echo -e "${YELLOW} Creating user symlinks...${NC}"
 
 	mkdir -p ~/.vim
-	ln -sf /etc/vim/vimrc ~/.vim/vimrc 2>/dev/null || true
-	ln -sf /etc/vim/vim.local ~/.vim/vimrc.local 2>/dev/null || true
+	ln -sf /etc/vim/vimrc $REAL_HOME/.vimrc 2>/dev/null || true
 	
 	read -p "Create root symlinks? (y/n): "
 	if [[ $REPLY =~ ^[Yy]$ ]]; then
 		ln -sf $REAL_HOME/.vim /root/.vim
 		sudo cp -a $REAL_HOME/.vim /root/
+		sudo cp .vimrc /root/
 	fi
 	echo "- Symlinks created!"
 }
@@ -78,25 +77,32 @@ installation_process() {
 	echo "====================================="
 	echo "|    Vim configuration installer    |"
 	echo "====================================="
-
-	read -p "Backup existing configs? (y/n): "
+	read -p "Use easy installation w/o backup? (y/n): "
 	if [[ $REPLY =~ ^[Yy]$ ]]; then
-		backup_configs
-	fi
-
-	read -p "Install Vim configs system-wide? (y/n): "
-	if [[ $REPLY =~ ^[Yy]$ ]]; then 
+		ln -sf $REAL_HOME/.vim /root/.vim
 		install_configs
-	fi
-
-	read -p "Install plugins? (y/n): "
-	if [[ $REPLY =~ ^[Yy]$ ]]; then
 		install_plugins
-	fi
-	
-	read -p "Create symlinks? (y/n): "
-	if [[ $REPLY =~ ^[Yy]$ ]]; then
 		create_user_symlink
+	elif [[ $REPLY =~ ^[Nn]$ ]]; then
+		read -p "Backup existing configs? (y/n): "
+		if [[ $REPLY =~ ^[Yy]$ ]]; then
+			backup_configs
+		fi
+
+		read -p "Install Vim configs system-wide? (y/n): "
+		if [[ $REPLY =~ ^[Yy]$ ]]; then 
+			install_configs
+		fi
+
+		read -p "Install plugins? (y/n): "
+		if [[ $REPLY =~ ^[Yy]$ ]]; then
+			install_plugins
+		fi
+		
+		read -p "Create symlinks? (y/n): "
+		if [[ $REPLY =~ ^[Yy]$ ]]; then
+			create_user_symlink
+		fi
 	fi
 }
 
@@ -106,7 +112,7 @@ main() {
 	echo ""
 	echo "Installed files:"
 	echo "  - /etc/vim/vimrc"
-	echo "  - /etc/vim/vimrc.local"
+	echo "  - ${REAL_HOME}/.vimrc"
 	echo "  - ~/.vim/autoload/plug.vim (vim manager)"
 	echo "  - ~/.vim/bundle (plugins directory)"
 	echo "" 
