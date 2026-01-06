@@ -59,19 +59,23 @@ install_plugins() {
 	}
 
 create_user_symlink(){
-	echo -e "${YELLOW}Creating user symlinks...${NC}"
-	if [ -L "${REAL_HOME}/.vimrc" ] && [ ! -e "$REAL_HOME/.vimrc" ]; then
-		rm -f "$REAL_HOME/.vimrc"
-	fi
-	ln -sf .vimrc "$REAL_HOME/.vimrc"
-	echo "${GREEN}	Created: $REAL_HOME/.vimrc"
-
-	read -rp "Create root symlinks? (y/n): " root_answer
-	if [[ $root_answer =~ ^[Yy]$ ]]; then
+	echo -e "${YELLOW}Creating root symlinks...${NC}"
+	if [[ -L "/root/.vimrc" ]]; then
+		echo "/root/.vimrc symlink already exists!"
+		read -p "Recreate the link with new parameters? (y/n): " root_answers
+		if [[ $root_answer =~ ^[Yy]$ ]]; then
+			sudo ln -sf $REAL_HOME/.vim /root/.vim 2>/dev/null
+			sudo ln -sf $REAL_HOME/.vimrc /root/.vimrc
+			
+			echo "- Symlinks created!"
+		fi
+	elif [[ ! -L "/root/.vimrc" ]]; then
 		sudo ln -sf $REAL_HOME/.vim /root/.vim 2>/dev/null
-		sudo ln -sf .vimrc /root/.vimrc
+		sudo ln -sf $REAL_HOME/.vimrc /root/.vimrc
+	else
+		echo "- Skipped."
 	fi
-	echo "- Symlinks created!"
+	
 }
 
 installation_process() {
