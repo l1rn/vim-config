@@ -65,5 +65,6 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'preservim/nerdtree'
 Plug 'frazrepo/vim-rainbow'
 Plug 'morhetz/gruvbox'
+Plug 'tpope/vim-surround'
 
 call plug#end()
