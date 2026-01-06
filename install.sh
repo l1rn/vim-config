@@ -21,6 +21,28 @@ if [ "$EUID" -ne 0 ]; then
 	exit 1
 fi
 
+dependencies=("curl" "vim" "git")
+
+check_dependencies() {
+	local missing_packages=()
+
+	for package in "${dependencies[@]}"; do
+		if dpkg -l | grep -qw "$package"; then
+			echo "$package is installed."
+		else
+			echo "$package isn't installed."
+			missing_packages+=("$package")
+		fi
+	done
+
+	if [ ${#missing_packages[@]} -ne 0 ]; then
+		echo -e "\e[103mInstalling missing packages: ${missing_packages[*]}${NC}"
+		sudo apt update && sudo apt install -y ${missing_packages[@]}
+	else
+		echo -e "\e[102mAll packages already installed!${NC}"
+	fi
+}
+
 backup_configs() {
 	echo -e "${YELLOW}Backing up existing configs...${NC}"
 	BACKUP_DIR="/tmp/vim-config/backup-$(date +%Y%m%d-%H%M%s)"
@@ -84,6 +106,7 @@ installation_process() {
 	echo "====================================="
 	read -p "Use easy installation w/o backup? (y/n): "
 	if [[ $REPLY =~ ^[Yy]$ ]]; then
+		check_dependencies``
 		install_configs
 		install_plugins
 		create_user_symlink
