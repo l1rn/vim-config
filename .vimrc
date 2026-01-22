@@ -23,3 +23,15 @@ nnoremap <F3> :NERDTreeToggle <CR>
 colorscheme gruvbox
 set background=dark
 let g:rainbow_active = 1
+
+"let g:ale_linters = {
+"\	'c': ['cppcheck', ''],
+"\}
+
+"let g:ale_lint_on_text_changed = 'always'
+"let g:ale_lint_on_insert_leave = 1
+
+"let g:ale_c_gcc_options = '-I$HOME/esp/esp-idf/components -I$HOME/esp/esp-idf/components/esp_wifi/include -I$HOME/esp/esp-idf/components/freertos/include -std=c11 -Wall'
+
+"nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+"nmap <silent> <C-j> <Plug>(ale_next_wrap)
