@@ -1,4 +1,6 @@
+let home_dir = $HOME
 set nocompatible
+
 set number
 
 set showcmd 
@@ -30,10 +32,6 @@ set pumheight=10
 
 set complete=.,t
 set completeopt=menu,menuone,noselect
-
 filetype plugin on
 set omnifunc=ccomplete#Complete
 
-inoremap <CR>n <C-x><C-o>
-nnoremap <F7> "*y$
-nnoremap <F8> "*p
