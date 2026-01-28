@@ -67,4 +67,6 @@ Plug 'frazrepo/vim-rainbow'
 Plug 'morhetz/gruvbox'
 Plug 'tpope/vim-surround'
 
+Plug 'vim-scripts/VimCompletesMe'
+
 call plug#end()

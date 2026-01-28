@@ -1,4 +1,3 @@
-let home_dir = $HOME
 set nocompatible
 set number
 
@@ -25,16 +24,16 @@ colorscheme gruvbox
 set background=dark
 let g:rainbow_active = 1
 
-set tags=home_dir/tags;homedir,tags;
+set tags=~/vim-config/tags
 
-"let g:ale_linters = {
-"\	'c': ['cppcheck', ''],
-"\}
+set pumheight=10
 
-"let g:ale_lint_on_text_changed = 'always'
-"let g:ale_lint_on_insert_leave = 1
+set complete=.,t
+set completeopt=menu,menuone,noselect
 
-"let g:ale_c_gcc_options = '-I$HOME/esp/esp-idf/components -I$HOME/esp/esp-idf/components/esp_wifi/include -I$HOME/esp/esp-idf/components/freertos/include -std=c11 -Wall'
+filetype plugin on
+set omnifunc=ccomplete#Complete
 
-"nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-"nmap <silent> <C-j> <Plug>(ale_next_wrap)
+inoremap <CR>n <C-x><C-o>
+nnoremap <F7> "*y$
+nnoremap <F8> "*p
