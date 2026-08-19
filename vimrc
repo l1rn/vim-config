@@ -60,13 +60,16 @@ endif
 filetype off
 call plug#begin('~/.vim/plugged')
 
+" Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'jiangmiao/auto-pairs'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'preservim/nerdtree'
 Plug 'frazrepo/vim-rainbow'
 Plug 'morhetz/gruvbox'
 Plug 'tpope/vim-surround'
 
+Plug 'tbastos/vim-lua'
+Plug 'spacewander/openresty-vim'
 Plug 'vim-scripts/VimCompletesMe'
 
 call plug#end()

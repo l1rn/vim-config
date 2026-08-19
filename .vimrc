@@ -1,3 +1,20 @@
+
+call plug#begin('~/.vim/plugged')
+
+" Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'jiangmiao/auto-pairs'
+Plug 'preservim/nerdtree'
+Plug 'frazrepo/vim-rainbow'
+Plug 'morhetz/gruvbox'
+Plug 'tpope/vim-surround'
+
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'tbastos/vim-lua'
+Plug 'vim-scripts/VimCompletesMe'
+
+call plug#end()
+
 let home_dir = $HOME
 set nocompatible
 
